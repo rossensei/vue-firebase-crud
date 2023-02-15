@@ -113,7 +113,7 @@ const compareStrings = (status) => {
             <div class="container p-3 border rounded mb-1 shadow-sm" id="addTask"
               data-bs-toggle="modal" data-bs-target="#exampleModal"
               >
-              <p class="mb-0 fw-semibold">+ Add New Task</p>
+              <p class="mb-0 fw-semibold"><i class="fa-solid fa-bars-progress"></i>&nbsp; Add New Task</p>
             </div>
               
             <div v-for="item in tasks" :key="item.task" class="container d-flex align-items-center p-3 border rounded mb-1 shadow-sm" id="task" >
@@ -131,7 +131,7 @@ const compareStrings = (status) => {
                 <div class="container v-hidden" id="action">
                   <div class="float-end">
                     <RouterLink :to="{ name: 'edit', params: { id: item.id }}" class="text-secondary" id="edit"> <!-- passing the id to the url as an object -->
-                      <i class="fa-solid fa-pen"></i>
+                      <i class="fa-solid fa-eye"></i>
                     </RouterLink> 
                   </div>
                 </div>
@@ -178,7 +178,7 @@ const compareStrings = (status) => {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success" @click="addTask()"><i class="fa-regular fa-floppy-disk"></i>&nbsp;Add Task</button>
+        <button type="button" class="btn btn-success" @click="addTask()">+&nbsp;Add Task</button>
       </div>
     </div>
   </div>

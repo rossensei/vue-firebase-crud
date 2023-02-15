@@ -70,10 +70,11 @@ const deleteTask = () => {
     <div class="container mt-5">
         <div class="row">
             <div class="container col-md-6">
-                <h3 class="text-center mb-3">Edit Task</h3>
+                <h3 class="text-center mb-3"><i class="fa-solid fa-pen-to-square"></i> Edit Task</h3>
                 <div class="card">
-                    <div class="card-header">
-                        <RouterLink to="/" class="fs-5 text-decoration-none text-dark fw-bold"> <i class="fa-solid fa-arrow-left"></i> Go Back</RouterLink>
+                    <div class="card-header d-flex align-items-center">
+                        <RouterLink to="/" class="fs-5 text-decoration-none text-dark fw-bold me-2"> <i class="fa-solid fa-arrow-left"></i></RouterLink>
+                        <p class="fs-5 mb-0">Go Back</p>
                     </div>
                     <div class="card-body">
                         <div class="form-floating mb-3">
@@ -119,7 +120,7 @@ const deleteTask = () => {
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <p class="fw-normal">Are you sure you want to delete this task {{ taskID }}?</p>
+              <p class="fw-normal">Are you sure you want to delete this task "{{ task }}"?</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
