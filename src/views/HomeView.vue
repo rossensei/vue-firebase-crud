@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { db } from '../firebase/firebase.js'
-import { collection, deleteDoc, addDoc, onSnapshot, doc, getDoc, query, orderBy } from 'firebase/firestore'
+import { collection, deleteDoc, addDoc, onSnapshot, doc, getDoc, query, orderBy, where } from 'firebase/firestore'
 import { RouterLink, RouterView } from 'vue-router'
 
 onMounted(() => {
@@ -83,6 +83,130 @@ const compareStrings = (status) => {
     }
 }
 
+const orderByNotStarted = () => {
+  const tasksRef = collection(db, 'tasks')
+
+  const q = query(tasksRef, orderBy('task', 'asc'), where('status', '==', 'Not Started'))
+
+  onSnapshot(q, (querySnapshot) => {
+    let tasksTmp = []
+    querySnapshot.forEach((doc) => {
+      const task = {
+        id: doc.id,
+        // uid: doc.data().uid,
+        task: doc.data().task,
+        endDate: new Date(Date.parse(doc.data().endDate)).toDateString(),
+        status: doc.data().status,
+        assignee: doc.data().assignee,
+      }
+      
+      tasksTmp.push(task)
+    })
+
+    tasks.value = tasksTmp
+  })
+
+}
+
+const orderByFinished = () => {
+  const tasksRef = collection(db, 'tasks')
+
+  const q = query(tasksRef, orderBy('task', 'asc'), where('status', '==', 'Finished'))
+
+  onSnapshot(q, (querySnapshot) => {
+  let tasksTmp = []
+  querySnapshot.forEach((doc) => {
+    const task = {
+      id: doc.id,
+      // uid: doc.data().uid,
+      task: doc.data().task,
+      endDate: new Date(Date.parse(doc.data().endDate)).toDateString(),
+      status: doc.data().status,
+      assignee: doc.data().assignee,
+    }
+    
+    tasksTmp.push(task)
+  })
+
+  tasks.value = tasksTmp
+  })
+
+}
+
+const orderByCancelled = () => {
+  const tasksRef = collection(db, 'tasks')
+
+  const q = query(tasksRef, orderBy('task', 'asc'), where('status', '==', 'Cancelled'))
+
+  onSnapshot(q, (querySnapshot) => {
+  let tasksTmp = []
+  querySnapshot.forEach((doc) => {
+    const task = {
+      id: doc.id,
+      // uid: doc.data().uid,
+      task: doc.data().task,
+      endDate: new Date(Date.parse(doc.data().endDate)).toDateString(),
+      status: doc.data().status,
+      assignee: doc.data().assignee,
+    }
+    
+    tasksTmp.push(task)
+  })
+
+  tasks.value = tasksTmp
+  })
+
+}
+
+const orderByInProgress = () => {
+  const tasksRef = collection(db, 'tasks')
+
+  const query1 = query(tasksRef, where('status', '==', 'In Progress'), orderBy('task', 'asc'))
+
+  // onSnapshot(q, (querySnapshot) => {
+  // let tasksTmp = []
+  // querySnapshot.forEach((doc) => {
+  //   const task = {
+  //     id: doc.id,
+  //     // uid: doc.data().uid,
+  //     task: doc.data().task,
+  //     endDate: new Date(Date.parse(doc.data().endDate)).toDateString(),
+  //     status: doc.data().status,
+  //     assignee: doc.data().assignee,
+  //   }
+    
+  //   tasksTmp.push(task)
+  // })
+
+  // tasks.value = tasksTmp
+  // })
+
+  onSnapshot(query1, (querySnapshot) => {
+  let tasksTmp = []
+  if(querySnapshot.empty){
+    tasks = []
+
+    console.log(tasks)
+  } else {
+    querySnapshot.forEach((doc) => {
+    const task = {
+      id: doc.id,
+      // uid: doc.data().uid,
+      task: doc.data().task,
+      endDate: new Date(Date.parse(doc.data().endDate)).toDateString(),
+      status: doc.data().status,
+      assignee: doc.data().assignee,
+    }
+    
+    tasksTmp.push(task)
+    })
+  }
+
+  tasks.value = tasksTmp
+  })
+
+}
+
 </script>
 
 <template>
@@ -90,6 +214,17 @@ const compareStrings = (status) => {
       <div class="row">
         <div class="container d-flex justify-content-between">
           <h3>Task Board</h3>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown button
+            </button>
+            <ul class="dropdown-menu">
+              <li><a @click="orderByNotStarted()" class="dropdown-item" href="#">Not Started</a></li>
+              <li><a @click="orderByFinished()" class="dropdown-item" href="#">Finished</a></li>
+              <li><a @click="orderByCancelled()" class="dropdown-item" href="#">Cancelled</a></li>
+              <li><a @click="orderByInProgress()" class="dropdown-item" href="#">In Progress</a></li>
+            </ul>
+          </div>
         </div>
         <div class="container col-md-12">
             <div class="container d-flex align-items-center p-3">
